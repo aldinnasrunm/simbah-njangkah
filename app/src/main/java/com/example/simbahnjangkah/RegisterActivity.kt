@@ -1,9 +1,12 @@
 package com.example.simbahnjangkah
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.PermissionChecker
 import androidx.core.text.isDigitsOnly
 import com.example.simbahnjangkah.ui.theme.SimbahNjangkahTheme
 import kotlinx.coroutines.CoroutineName
@@ -43,6 +47,20 @@ private val db = App.userDatabase.userDao()
 private val scope = CoroutineScope(Dispatchers.IO + CoroutineName("m-scope"))
 
 class RegisterActivity : ComponentActivity() {
+
+    val requestPermissionLauncher =
+        this.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            permissions.entries.forEach {
+                if (it.value) {
+                    // Permission is granted, you can proceed with accessing body sensors
+                    Toast.makeText(this, "${it.key} permission granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Permission is denied
+                    Toast.makeText(this, "${it.key} permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -56,8 +74,36 @@ class RegisterActivity : ComponentActivity() {
                 }
             }
         }
-    }
 
+        val permissions = listOf(
+            Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        )
+
+        val notGrantedPermissions = permissions.filter {
+            PermissionChecker.checkSelfPermission(this, it) != PermissionChecker.PERMISSION_GRANTED
+        }.toMutableList()
+
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    // Permission is granted, you can proceed with accessing body sensors
+                    Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
+                    // Request the next permission if there are more to request
+                    if (notGrantedPermissions.isNotEmpty()) {
+                        requestPermissionLauncher.launch(arrayOf(notGrantedPermissions.removeAt(0)))
+                    }
+                } else {
+                    // Permission is denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+        if (notGrantedPermissions.isNotEmpty()) {
+            requestPermissionLauncher.launch(notGrantedPermissions.removeAt(0))
+        }
+    }
 
 
     @Composable

@@ -11,6 +11,12 @@ interface TrainingDao {
     @Upsert
     fun upsertTraining(training: Training)
 
+//    update data by id
+    @Query("UPDATE training SET dateRecorded = :value1, totalStep = :value2 WHERE id = :id")
+    fun updateTrainingFields(id: Int, value1: String, value2: Int)
+
+
+
     @Insert
     suspend fun insertTraining(training: Training)
 
@@ -25,6 +31,8 @@ interface TrainingDao {
     @Query("SELECT * FROM training WHERE dateRecorded = :date")
     fun getTrainingByDate(date: String): Training
 
+    @Query("SELECT * FROM Training ORDER BY id DESC LIMIT 1")
+    suspend fun getLastTraining(): Training
 
 
 }
