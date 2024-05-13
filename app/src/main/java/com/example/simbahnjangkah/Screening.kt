@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -57,6 +58,8 @@ class Screening : ComponentActivity(), SensorEventListener {
     private var remainingTime by mutableStateOf(0L)
     private var isRunning by mutableStateOf(false)
     val db_test = App.userDatabase.testDataDao()
+    private var stepProxy = 66.0;
+    private var isFinishTest by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +105,7 @@ class Screening : ComponentActivity(), SensorEventListener {
                 .width(400.dp)
                 .height(400.dp),
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.tertiary // Change color as needed
+            // Change color as needed,
 
         ) {
             Button(
@@ -110,15 +113,39 @@ class Screening : ComponentActivity(), SensorEventListener {
                 modifier = Modifier
                     .fillMaxSize(),
                 shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
+
             ) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.displayLarge,
-                    color = Color.White // Change text color as needed
+                    color = MaterialTheme.colorScheme.primary // Change text color as needed
                 )
             }
         }
     }
+
+
+    @Composable
+    fun FinishDialog() {
+        if (isFinishTest) {
+            AlertDialog(
+                onDismissRequest = { isFinishTest = false },
+                title = { Text("Screening Selesai") },
+                text = { Text("Terima kasih telah melakukan screening") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            isFinishTest = false
+                        }
+                    ) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+    }
+
 
         @Preview(showBackground = true)
         @Composable
@@ -134,11 +161,12 @@ class Screening : ComponentActivity(), SensorEventListener {
                     modifier = Modifier.padding(8.dp, 0.dp,0.dp,16.dp  )
                 )
                 Text(
-                    text = "Step count: $stepCount",
+                    text = "Jumlah Langkah: $stepCount",
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(8.dp)
                 )
 
+                FinishDialog()
                 BigCircularButton(if (isRunning) "${formatTime(remainingTime)}" else "Mulai") {
                         if (!isRunning)
                             isRunning = true
@@ -155,21 +183,21 @@ class Screening : ComponentActivity(), SensorEventListener {
     }
 
     private fun startCountDownTimer() {
-        //        timer = object : CountDownTimer(1 * 60 * 1000, 1000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                // Update the remaining time
-//                remainingTime = millisUntilFinished / 1000
-//            }
-
-        timer = object : CountDownTimer(30000, 1000) {
+                timer = object : CountDownTimer(6 * 60 * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 // Update the remaining time
                 remainingTime = millisUntilFinished / 1000
             }
 
+//        timer = object : CountDownTimer(30000, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                // Update the remaining time
+//                remainingTime = millisUntilFinished / 1000
+//            }
+
             override fun onFinish() {
                 SaveData()
-                Toast.makeText(this@Screening, "Six minutes finished", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Screening, "Yeay.. screening sudah selesai!!", Toast.LENGTH_SHORT).show()
             }
         }.start()
     }
@@ -180,11 +208,12 @@ class Screening : ComponentActivity(), SensorEventListener {
                 TestData(
                     dateRecorded = GetDateNow(),
                     totalSteps = stepCount,
-                    status = true
+                    distance = ((stepCount.toLong() * stepProxy) / 100.0).toDouble()
                 )
             )
 
             if (db_test.getAllTestData().size > 0) {
+                isFinishTest = true
                 Log.e("TAG", "onFinish: Data saved!!")
             } else {
                 Log.e("TAG", "onFinish: Data not saved!!")
@@ -215,6 +244,7 @@ class Screening : ComponentActivity(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         Log.d("OnSensorChanged", "onAccuracyChanged: $accuracy")
     }
+
 
 @Preview(showBackground = true)
 @Composable

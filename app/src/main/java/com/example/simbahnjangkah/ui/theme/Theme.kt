@@ -16,18 +16,20 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = AtomicOrange,
-    secondary = AutumnWhite,
-    tertiary = DemonicRed,
-    background = FirmanentBlue,
+    primary = OpticalGreen,
+    secondary = NahimicGreen,
+    tertiary = YuanYellow,
+    background = OpiumGreen,
+    onPrimary = SimpusDark,
+
 
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = FirmanentBlue,
-    secondary = AutumnWhite,
-    tertiary = DemonicRed,
-    background = AtomicOrange,
+    primary = OpticalGreen,
+    secondary = NahimicGreen,
+    tertiary = YuanYellow,
+    background = OpiumGreen,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -54,13 +56,13 @@ fun SimbahNjangkahTheme(
 //        }
 
         darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> DarkColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

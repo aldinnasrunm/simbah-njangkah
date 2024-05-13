@@ -10,12 +10,22 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_simbah_njangkah"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_simbah_njangkah_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbahNjangkah"
         tools:targetApi="31">
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_history"
+            android:theme="@style/Theme.SimbahNjangkah" />
+        <activity
+            android:name=".WelcomingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_welcoming"
+            android:theme="@style/Theme.SimbahNjangkah" />
         <activity
             android:name=".JangkahActivity"
             android:exported="false"

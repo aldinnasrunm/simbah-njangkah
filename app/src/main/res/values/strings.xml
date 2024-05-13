@@ -4,4 +4,6 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_screening">Screening</string>
     <string name="title_activity_jangkah">JangkahActivity</string>
+    <string name="title_activity_welcoming">WelcomingActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -130,7 +131,6 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
                 .width(400.dp)
                 .height(400.dp),
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.tertiary // Change color as needed
 
         ) {
             Button(
@@ -138,18 +138,19 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
                 modifier = Modifier
                     .fillMaxSize(),
                 shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary)
             ) {
                 Column {
                     Text(
                         text = text,
                         style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.secondary // Change text color as needed
+                        color = MaterialTheme.colorScheme.primary // Change text color as needed
                     )
                     if (visibility){
                         Text(
                             text = "Dari 5000 Langkah",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.secondary // Change text color as needed
+                            color = MaterialTheme.colorScheme.primary // Change text color as needed
 
                             )
                     }

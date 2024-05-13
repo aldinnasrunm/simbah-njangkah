@@ -10,5 +10,5 @@ data class TestData(
     @PrimaryKey(autoGenerate = false) val id : Int = 0,
     @ColumnInfo(name = "dateRecorded" ) val dateRecorded : Date,
     @ColumnInfo(name = "totalStep" ) val totalSteps : Int = 0,
-    @ColumnInfo(name = "status" ) val status : Boolean = false
+    @ColumnInfo(name = "distance" ) val distance : Double = 0.0
 )
