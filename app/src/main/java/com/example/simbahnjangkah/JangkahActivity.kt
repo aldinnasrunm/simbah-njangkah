@@ -58,6 +58,8 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
     private var lastRecordedStep by mutableStateOf(0)
     private var isSync = false
     private val target = 5000
+    private var stepProxy = 66.0;
+
 
     private var isRunning by mutableStateOf(false)
     val db_train = App.userDatabase.trainingDao()
@@ -183,13 +185,33 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
 
     private fun upsertData(step : Int){
         scope.launch {
-            db_train.upsertTraining(Training(lastRecordedID, GetDateNow(), step, status = false))
+            db_train.upsertTraining(Training(id = lastRecordedID, dateRecorded = GetDateNow(), totalSteps = step, distance = ((step * stepProxy) / 100.0) ,status = if(step >= target) true else false))
+        }
+    }
+
+    private fun upsertUpdate(step : Int){
+        scope.launch {
+            db_train.upsertTraining(Training(dateRecorded = GetDateNow(), totalSteps = step))
         }
     }
 
     private fun insertData(step : Int){
         scope.launch {
-            db_train.insertTraining(Training(dateRecorded = GetDateNow(), totalSteps =  step, status = false))
+            db_train.insertTraining(Training(dateRecorded = GetDateNow(), totalSteps =  step, distance = ((step * stepProxy) / 100.0), status = false))
+            checkIsRecorded()
+        }
+    }
+
+    private fun insertOrUpdateData(step : Int){
+        scope.launch {
+            var data = db_train.getTrainingByDate(GetDateNow().toString())
+            if (data != null) {
+                // Update the existing record
+                db_train.updateTraining(dateRecorded = GetDateNow()!!, totalStep = step, status = if(step >= target) true else false)
+            } else {
+                // Insert a new record
+                db_train.insertTraining(Training(dateRecorded = GetDateNow(), totalSteps =  step, distance = ((step * stepProxy) / 100.0), status = false))
+            }
             checkIsRecorded()
         }
     }
@@ -211,11 +233,14 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
             stepCount += estep - lastStep
             lastStep = estep
 
-            if (lastRecordedStep == 0){
-                insertData(stepCount)
-            }
 
-            upsertData(stepCount)
+//            if (lastRecordedStep == 0 && stepCount > 1){
+//                insertData(stepCount)
+//                insertOrUpdateData(stepCount)
+//            }
+            insertOrUpdateData(stepCount)
+
+//                upsertData(stepCount)
 //            println("Step count: $stepCount")
             Toast.makeText(this@JangkahActivity, "Jangkah : $stepCount", Toast.LENGTH_SHORT)
             Log.d("Step Count", "Step: $stepCount ")

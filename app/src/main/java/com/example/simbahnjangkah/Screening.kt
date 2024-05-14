@@ -5,8 +5,11 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -60,6 +63,8 @@ class Screening : ComponentActivity(), SensorEventListener {
     val db_test = App.userDatabase.testDataDao()
     private var stepProxy = 66.0;
     private var isFinishTest by mutableStateOf(false)
+    private var isFinishTestDisplay by mutableStateOf(false)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +90,7 @@ class Screening : ComponentActivity(), SensorEventListener {
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-                    ){
+                    ) {
                         StepCounter()
                     }
 
@@ -93,8 +98,6 @@ class Screening : ComponentActivity(), SensorEventListener {
             }
         }
     }
-
-
 
 
     @Composable
@@ -125,6 +128,14 @@ class Screening : ComponentActivity(), SensorEventListener {
         }
     }
 
+//
+//    private fun statusState(distance : Double) {
+//
+//        var result = "Normal"
+//        if (distance < 580.0) {
+//            result = "Kurang"
+//        }
+//    }
 
     @Composable
     fun FinishDialog() {
@@ -147,33 +158,54 @@ class Screening : ComponentActivity(), SensorEventListener {
     }
 
 
-        @Preview(showBackground = true)
-        @Composable
-        fun StepCounter() {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Screening 6 Menit",
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(8.dp, 0.dp,0.dp,16.dp  )
-                )
-                Text(
-                    text = "Jumlah Langkah: $stepCount",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(8.dp)
-                )
+    @Preview(showBackground = true)
+    @Composable
+    fun StepCounter() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Screening 6 Menit",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(8.dp, 0.dp, 0.dp, 16.dp)
+            )
+            Text(
+                text = "Jumlah Langkah: $stepCount",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(8.dp)
+            )
 
-                FinishDialog()
-                BigCircularButton(if (isRunning) "${formatTime(remainingTime)}" else "Mulai") {
-                        if (!isRunning)
-                            isRunning = true
+            FinishDialog()
+            BigCircularButton(if (isRunning) "${formatTime(remainingTime)}" else "Mulai") {
+                if (!isRunning)
+                    isRunning = true
+                val mp_start = android.media.MediaPlayer.create(
+                    applicationContext,
+                    R.raw.start_screening
+                )
+                mp_start.start()
 
-                }
+                vibrateDevice()
+
             }
         }
+    }
+
+    private fun vibrateDevice(){
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(
+                    500,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+        } else {
+            vibrator.vibrate(500)
+        }
+    }
 
 
     private fun formatTime(seconds: Long): String {
@@ -183,21 +215,31 @@ class Screening : ComponentActivity(), SensorEventListener {
     }
 
     private fun startCountDownTimer() {
-                timer = object : CountDownTimer(6 * 60 * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                // Update the remaining time
-                remainingTime = millisUntilFinished / 1000
-            }
-
-//        timer = object : CountDownTimer(30000, 1000) {
+//        timer = object : CountDownTimer(6 * 60 * 1000, 1000) {
 //            override fun onTick(millisUntilFinished: Long) {
 //                // Update the remaining time
 //                remainingTime = millisUntilFinished / 1000
 //            }
 
+        timer = object : CountDownTimer(5000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // Update the remaining time
+                remainingTime = millisUntilFinished / 1000
+            }
+
             override fun onFinish() {
+                val mp_finish = android.media.MediaPlayer.create(
+                    applicationContext,
+                    R.raw.finish_screening
+                )
+                mp_finish.start()
                 SaveData()
-                Toast.makeText(this@Screening, "Yeay.. screening sudah selesai!!", Toast.LENGTH_SHORT).show()
+                vibrateDevice()
+                Toast.makeText(
+                    this@Screening,
+                    "Yeay.. screening sudah selesai!!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }.start()
     }
@@ -246,17 +288,17 @@ class Screening : ComponentActivity(), SensorEventListener {
     }
 
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SimbahNjangkahTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-        ){
-            StepCounter()
+    @Preview(showBackground = true)
+    @Composable
+    fun GreetingPreview() {
+        SimbahNjangkahTheme {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+            ) {
+                StepCounter()
+            }
         }
     }
-}
 }

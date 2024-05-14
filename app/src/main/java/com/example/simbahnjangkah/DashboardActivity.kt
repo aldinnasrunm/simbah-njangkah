@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,7 +64,20 @@ class DashboardActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.onPrimary
                 ) {
+                    ImageBackground(imageResId = R.drawable.bg_dashboard)
                     Column {
+                        val painter: Painter = painterResource(id = R.drawable.logo_white)
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(0.dp, 80.dp, 0.dp, 0.dp)
+                        ) {
+                            Image(
+                                painter = painter,
+                                contentDescription = null,
+                            )
+                        }
                         UserInfo()
                         mainScreen()
                     }
@@ -74,6 +90,23 @@ class DashboardActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    fun ImageBackground(imageResId: Int) {
+        val painter: Painter = painterResource(id = imageResId)
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 
@@ -101,7 +134,7 @@ class DashboardActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp, 8.dp)
+                .padding(16.dp, 24.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -117,15 +150,15 @@ class DashboardActivity : ComponentActivity() {
                 Column {
 
                     Text(text = "Halo,", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-                    Text(text = if(gender == "PRIA") "Pak $name" else "Bu, $name",  color = MaterialTheme.colorScheme.primary)
+                    Text(text = if(gender == "PRIA") "Mbah $name" else "Mbah, $name",  color = MaterialTheme.colorScheme.primary)
                 }
 
             }
-            Button(onClick = {
-                deleteUser()
-            }) {
-                Text(text = "Delete User")
-            }
+//            Button(onClick = {
+//                deleteUser()
+//            }) {
+//                Text(text = "Delete User")
+//            }
 
 //            Button(onClick = {
 //                Intent(this@DashboardActivity, JangkahActivity::class.java).also {
@@ -135,11 +168,11 @@ class DashboardActivity : ComponentActivity() {
 //                Text(text = "Mulai Latihan 5000 Jangkah")
 //            }
 
-            Button(onClick = {
-                deleteLatihanData()
-            }) {
-                Text(text = "Delete Latihan Data")
-            }
+//            Button(onClick = {
+//                deleteLatihanData()
+//            }) {
+//                Text(text = "Delete Latihan Data")
+//            }
         }
     }
 
@@ -252,7 +285,7 @@ class DashboardActivity : ComponentActivity() {
                     shape = RoundedCornerShape(32.dp),
                     color = MaterialTheme.colorScheme.secondary,
                     onClick = {
-
+                        startActivity(Intent(this@DashboardActivity, HistoryActivity::class.java))
                     }
                 ) {
                     Column(
