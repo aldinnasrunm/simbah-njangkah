@@ -211,7 +211,7 @@ class DashboardActivity : ComponentActivity() {
                             startActivity(it)
                         }
                     } else{
-                        Toast.makeText(this@DashboardActivity, "Versi android belum mendukung, perbarui perangkat anda", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DashboardActivity, "Your android version is not supported, please update your device!", Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {
@@ -228,11 +228,11 @@ class DashboardActivity : ComponentActivity() {
                             .padding(0.dp, 0.dp, 0.dp, 16.dp)
                     )
                     Text(
-                        text = "Latihan 5000 Jangkah",
+                        text = "5000 Steps Exercise",
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
-                    Text(text = "Ayo latihan 5000 langkah setiap hari untuk menjaga kebugaran dan mengurangi risiko jatuh bagi para lansia",
+                    Text(text = "Let's practice 5000 steps every day to maintain fitness and reduce the risk of falls for the elderly",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color(0xFF76522F)
                     )
@@ -266,11 +266,11 @@ class DashboardActivity : ComponentActivity() {
                                 .padding(0.dp, 0.dp, 0.dp, 16.dp)
                         )
                         Text(
-                            text = "Screening Ulang",
+                            text = "Rescreening",
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Text(text = "lakukan screening ulang untuk membandingkan hasil latihan",
+                        Text(text = "Perform a rescreening to compare the training results",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -301,11 +301,11 @@ class DashboardActivity : ComponentActivity() {
                                 .padding(0.dp, 0.dp, 0.dp, 16.dp)
                         )
                         Text(
-                            text = "Lihat Histori Latihan",
+                            text = "History",
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.background
                         )
-                        Text(text = "LIhat histori latihan yang sudah dilakukan sebelumnya",
+                        Text(text = "See your exercise history",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.background
                         )
@@ -327,8 +327,8 @@ class DashboardActivity : ComponentActivity() {
             onDismissRequest = {
                 openDialog.value = false
             },
-            title = { Text("Lakukan Screening") },
-            text = { Text("Ayo lakukan screening penggunaan aplikasi selama 6 menit") },
+            title = { Text("Perform a screening") },
+            text = { Text("Let's perform an application usage screening for 6 minutes") },
             confirmButton = {
                 Button(
                     onClick = {
@@ -336,7 +336,7 @@ class DashboardActivity : ComponentActivity() {
 //                        finish()
                     }
                 ) {
-                    Text("Lakukan Screening")
+                    Text("Perform Now")
                 }
             },
         )

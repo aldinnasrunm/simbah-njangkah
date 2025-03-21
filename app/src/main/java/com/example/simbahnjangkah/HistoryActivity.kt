@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,7 +56,19 @@ class HistoryActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TbData(data = trainingData)
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Exercise History",
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = Color(0xFFFFFFFF),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp) // Adds space below the title
+                        )
+                        TbData(data = trainingData)
+                    }
                 }
             }
         }
@@ -98,31 +112,50 @@ class HistoryActivity : ComponentActivity() {
 //    }
     @Composable
     fun TbData(data: List<List<String>>) {
-        var header = listOf("No", "Tanggal", "Jumlah Langkah", "Jarak")
+        val header = listOf("No", "Date", "Steps count", "Distance")
         Column {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        header.forEachIndexed { _, item ->
-                            TableCell(
-                                text = item,
-                                isFirstColumn = false
-                            ) // Header row shouldn't have isFirstColumn set to true
-                        }
-                    }
-                }
                 itemsIndexed(data) { rowIndex, rowData ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFCE7)), // Light cream background
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
-                        rowData.forEachIndexed { colIndex, item ->
-                            TableCell(text = item, isFirstColumn = colIndex == 0)
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "No : ${rowData[0]}", // FIXED: Access rowData correctly
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF345C2C)
+                                )
+                                Text(
+                                    text = "Date: ${rowData[1]}",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF345C2C)
+                                )
+                            }
+//                            Spacer(modifier = Modifier.height(8.dp)) // Adds spacing
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "Steps: ${rowData[2]}",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF345C2C)
+                                )
+                                Text(
+                                    text = "Distance: ${rowData[3]} km",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = Color(0xFF345C2C)
+                                )
+                            }
                         }
                     }
                 }
@@ -193,3 +226,4 @@ class HistoryActivity : ComponentActivity() {
         }
     }
 }
+

@@ -82,7 +82,7 @@ class WelcomingActivity : ComponentActivity() {
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "Meniti 5000 langkah setiap hari bukan hanya sekadar latihan, tapi juga kunci untuk menjaga kebugaran dan mengurangi risiko jatuh bagi para lansia.",
+                text = "Walking 5,000 steps every day is not just exercise, but also the key to maintaining fitness and reducing the risk of falls for the elderly.",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,7 +100,7 @@ class WelcomingActivity : ComponentActivity() {
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary),
             ) {
                 Text(
-                    text = "Mulai Sekarang",
+                    text = "Start Now",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp),

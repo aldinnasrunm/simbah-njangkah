@@ -102,23 +102,23 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
 
         ) {
             Text(
-                text = "Penghitung Langkah Harian",
+                text = "Daily Step Counter",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(8.dp, 0.dp,0.dp,16.dp ),
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = "Lakukan minimal 5000 Langkah setiap hari untuk mendapatkan hasil yang maksimal",
+                text = "Take at least 5,000 steps every day to achieve optimal results",
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(8.dp),
                 textAlign = TextAlign.Center
             )
 
-            BigCircularButton(if (isRunning) "$stepCount" else "Mulai", if (isRunning) true else false) {
+            BigCircularButton(if (isRunning) "$stepCount" else "Start", if (isRunning) true else false) {
                 if (!isRunning){
                     isRunning = true
-                    Toast.makeText(this@JangkahActivity, "Latihan Jangkah Dimulai", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@JangkahActivity, "Exercise Started", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -242,7 +242,7 @@ class JangkahActivity : ComponentActivity(), SensorEventListener {
 
 //                upsertData(stepCount)
 //            println("Step count: $stepCount")
-            Toast.makeText(this@JangkahActivity, "Jangkah : $stepCount", Toast.LENGTH_SHORT)
+            Toast.makeText(this@JangkahActivity, "Steps : $stepCount", Toast.LENGTH_SHORT)
             Log.d("Step Count", "Step: $stepCount ")
         }
     }

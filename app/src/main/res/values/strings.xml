@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simbah Njangkah</string>
+    <string name="app_name">Happy Walking</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_screening">Screening</string>

@@ -142,8 +142,8 @@ class Screening : ComponentActivity(), SensorEventListener {
         if (isFinishTest) {
             AlertDialog(
                 onDismissRequest = { isFinishTest = false },
-                title = { Text("Screening Selesai") },
-                text = { Text("Terima kasih telah melakukan screening") },
+                title = { Text("Screening Finished!") },
+                text = { Text("Thank you for completing the screening!") },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -167,18 +167,18 @@ class Screening : ComponentActivity(), SensorEventListener {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Screening 6 Menit",
+                text = "6 Minutes Screening",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(8.dp, 0.dp, 0.dp, 16.dp)
             )
             Text(
-                text = "Jumlah Langkah: $stepCount",
+                text = "Total Steps: $stepCount",
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(8.dp)
             )
 
             FinishDialog()
-            BigCircularButton(if (isRunning) "${formatTime(remainingTime)}" else "Mulai") {
+            BigCircularButton(if (isRunning) "${formatTime(remainingTime)}" else "Start") {
                 if (!isRunning)
                     isRunning = true
                 val mp_start = android.media.MediaPlayer.create(
@@ -215,17 +215,17 @@ class Screening : ComponentActivity(), SensorEventListener {
     }
 
     private fun startCountDownTimer() {
-//        timer = object : CountDownTimer(6 * 60 * 1000, 1000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                // Update the remaining time
-//                remainingTime = millisUntilFinished / 1000
-//            }
-
-        timer = object : CountDownTimer(5000, 1000) {
+        timer = object : CountDownTimer(6 * 60 * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 // Update the remaining time
                 remainingTime = millisUntilFinished / 1000
             }
+
+//        timer = object : CountDownTimer(5000, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                // Update the remaining time
+//                remainingTime = millisUntilFinished / 1000
+//            }
 
             override fun onFinish() {
                 val mp_finish = android.media.MediaPlayer.create(
@@ -237,7 +237,7 @@ class Screening : ComponentActivity(), SensorEventListener {
                 vibrateDevice()
                 Toast.makeText(
                     this@Screening,
-                    "Yeay.. screening sudah selesai!!",
+                    "Yay! The screening is complete!!",
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -137,7 +137,7 @@ class RegisterActivity : ComponentActivity() {
                 .padding(24.dp, 8.dp),
 
             ) {
-            val header = "Registrasi Data Diri"
+            val header = "Registration"
             val name = remember { mutableStateOf("") }
             val age = remember { mutableStateOf("") }
             var selectedGender by remember { mutableStateOf(JenisKelamin.PRIA) }
@@ -167,7 +167,7 @@ class RegisterActivity : ComponentActivity() {
             )
 
             Text(
-                text = "Nama",
+                text = "Name",
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 4.dp),
                 color = MaterialTheme.colorScheme.onPrimary
@@ -176,7 +176,7 @@ class RegisterActivity : ComponentActivity() {
             TextField(
                 value = name.value,
                 onValueChange = { name.value = it },
-                label = { Text("Nama") },
+                label = { Text("Name") },
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 4.dp)
                     .fillMaxWidth(),
@@ -184,7 +184,7 @@ class RegisterActivity : ComponentActivity() {
                 )
 
             Text(
-                text = "Usia",
+                text = "Age",
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 4.dp),
                 color = MaterialTheme.colorScheme.onPrimary
@@ -197,7 +197,7 @@ class RegisterActivity : ComponentActivity() {
                         age.value = it
                     }
                 },
-                label = { Text("Usia") },
+                label = { Text("Age") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 4.dp)
@@ -209,7 +209,7 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier.padding(0.dp, 12.dp, 0.dp, 12.dp)
             ) {
                 Text(
-                    text = "Pilih Jenis Kelamin:",
+                    text = "Gender:",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary
 
@@ -227,7 +227,7 @@ class RegisterActivity : ComponentActivity() {
                         )
                         )
                     Text(
-                        text = "Pria",
+                        text = "Male",
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.padding(start = 8.dp),
                         color = MaterialTheme.colorScheme.onPrimary
@@ -246,7 +246,7 @@ class RegisterActivity : ComponentActivity() {
 
                     )
                     Text(
-                        text = "Wanita",
+                        text = "Female",
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.padding(start = 8.dp),
                         color = MaterialTheme.colorScheme.onPrimary
@@ -260,7 +260,7 @@ class RegisterActivity : ComponentActivity() {
                     onClick = {
 
                         if (name.value.isEmpty() || age.value.isEmpty()) {
-                            Toast.makeText(this@RegisterActivity, "Data tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@RegisterActivity, "Please fill the data", Toast.LENGTH_SHORT).show()
                             return@Button
                         }else{
                             val user = User(
@@ -277,7 +277,7 @@ class RegisterActivity : ComponentActivity() {
 
                     ) {
                     Text(
-                        text = "Registrasi sekarang",
+                        text = "Register Now",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(12.dp),

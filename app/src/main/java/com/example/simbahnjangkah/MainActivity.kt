@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GreetingPreview() {
         SimbahNjangkahTheme {
-            Greeting("Simbah Njangkah")
+            Greeting("Happy Walking")
         }
     }
 }
